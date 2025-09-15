@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 
 import { DatabaseSync } from "node:sqlite"
+import { constants as httpConstants } from "node:http2"
 import assert from "node:assert/strict"
 
 import { KVPairs } from "./db/kvpairs.js"
@@ -47,6 +48,13 @@ app.get("/", authorizationMiddleware, (req, res) => {
     res.set("Content-Type", "text/html")
     res.write(header(req.path))
     res.write("<h2>Data</h2>")
+    res.write(`
+        <form method="POST">
+            <label for="key">Key:</label> <input type="text" placeholder="Key" name="key" />
+            <label for="value">Value:</label> <input type="text" placeholder="Value" name="value" />
+            <button type="submit">Set</button>
+        </form>
+    `)
     res.write("<ul>")
     for (const [key, value] of pairs.entries()) {
         res.write(`<li>${encodeURIComponent(key)}: ${encodeURIComponent(value)}</li>`)
@@ -66,7 +74,22 @@ app.get("/", authorizationMiddleware, (req, res) => {
     res.end()
 })
 
+app.post("/", authorizationMiddleware, (req, res) => {
+    if (req.body == undefined) {
+        res.sendStatus(httpConstants.HTTP_STATUS_BAD_REQUEST)
+        return
+    }
+    const { key, value } = req.body
+    if (typeof key != "string" || typeof value != "string") {
+        res.sendStatus(httpConstants.HTTP_STATUS_BAD_REQUEST)
+        return
+    }
+
+    kvpairs.set(key, value)
+    res.redirect("/")
+})
+
 
 app.listen(PORT, () => {
-    console.log(`app started on address http://localhost:${PORT}`)
+    console.log(`app started: http://localhost:${PORT}/auth/login`)
 })
