@@ -1,0 +1,41 @@
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@4
+      - uses: actions/setup-node@4
+        with:
+          node-version: 'v22.14.0'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run audit
+        run: npm audit
+  # https://github.com/dependency-check/Dependency-Check_Action
+  owasp_dependency_check:
+    runs-on: ubuntu-latest
+    name: dependency_check
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Dependecy check
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'itmo-security-lab1'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          args: >
+            --failOnCVSS 0
+            --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
