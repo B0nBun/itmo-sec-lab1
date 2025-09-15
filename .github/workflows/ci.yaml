@@ -34,6 +34,7 @@ jobs:
           args: >
             --failOnCVSS 0
             --enableRetired
+            --suppression ./owasp_suppression.xml
       - name: Upload Test results
         uses: actions/upload-artifact@master
         with:
