@@ -1,9 +1,8 @@
 import assert from "node:assert/strict"
-import { DatabaseSync } from "node:sqlite"
 
 export class KVPairs {
     /**
-     * @param {DatabaseSync} database
+     * @param {import('node:sqlite').DatabaseSync} database
      */
     constructor(database) {
         this.database = database

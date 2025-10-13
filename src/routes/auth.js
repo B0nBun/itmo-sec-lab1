@@ -2,8 +2,9 @@ import { Router } from "express"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { constants as httpConstants } from "node:http2"
-import { Users } from "../db/users.js"
 import { header } from "../header.js"
+
+/** @typedef {import('../db/users.js').Users} Users */
 
 /**
  * @param {string} jwtSecret

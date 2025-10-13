@@ -26,6 +26,7 @@ kvpairs.set("foo", "bar")
 kvpairs.set("<script>alert(1)</script><i>italic</i>", "<b>BOLD</b>")
 kvpairs.set("b0ba", "KiKi")
 kvpairs.set("fizz", "buzz")
+kvpairs.set("'' OR '1' = '1'", "SQL injection attempt")
 
 await createUser(users, "Alice", "password")
 await createUser(users, "Bob", "password")

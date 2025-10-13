@@ -1,9 +1,7 @@
 import { Router } from "express"
-import { constants as httpConstants } from "node:http2"
-import { KVPairs } from "../db/kvpairs.js"
 
 /**
- * @param {KVPairs} kvpairs 
+ * @param {import('../db/kvpairs.js').KVPairs} kvpairs 
  * @returns {Router}
  */
 export function apiRouter(kvpairs) {
