@@ -15,6 +15,8 @@ jobs:
         run: npm ci
       - name: Run audit
         run: npm audit
+      - name: Run typecheck and eslint
+        run: npm run check
   # https://github.com/dependency-check/Dependency-Check_Action
   owasp_dependency_check:
     runs-on: ubuntu-latest
